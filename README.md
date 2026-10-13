@@ -1,6 +1,10 @@
 # GitHub Profile Ranker
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://github-ranker-five.vercel.app)
+
 Score any public GitHub profile, see how it compares to others, and get concrete suggestions to improve.
+
+🔗 **Live Website**: [https://github-ranker-five.vercel.app](https://github-ranker-five.vercel.app)
 
 ## Features
 
@@ -91,7 +95,16 @@ Forks are excluded from all repo metrics so forking popular projects doesn't inf
 
 ## Deployment
 
-Docker:
+### Vercel (Serverless)
+
+Live URL: [https://github-ranker-five.vercel.app](https://github-ranker-five.vercel.app)
+
+Deploy with Vercel CLI:
+```bash
+npx vercel --prod
+```
+
+### Docker
 
 ```bash
 docker build -t github-ranker .
