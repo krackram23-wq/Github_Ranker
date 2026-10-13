@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GitHub Profile Ranker</title>
+  <style>
+    :root {
+      --bg: #0d1117; --panel: #161b22; --line: #30363d;
+      --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+      --good: #3fb950; --warn: #d29922; --bad: #f85149;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    header, main { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+    header { padding-top: 32px; }
+    main { padding-bottom: 60px; }
+    h1 { margin: 0 0 4px; font-size: 28px; }
+    h2 { font-size: 18px; margin: 0 0 12px; }
+    .sub { color: var(--muted); margin: 0; }
+    form { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 8px; }
+    input, select { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 15px; }
+    input { flex: 1; min-width: 200px; }
+    button { padding: 10px 18px; border-radius: 8px; border: 0; background: var(--accent); color: #0d1117; font-weight: 600; cursor: pointer; font-size: 15px; }
+    button.ghost { background: var(--line); color: var(--text); }
+    button:disabled { opacity: .5; cursor: wait; }
+    .status { min-height: 22px; color: var(--muted); font-size: 14px; }
+    .status.err { color: var(--bad); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 16px; }
+    .profile { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .avatar { width: 72px; height: 72px; border-radius: 50%; border: 1px solid var(--line); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+    .stat { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+    .stat b { display: block; font-size: 22px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+    .score { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+    .ring { font-size: 64px; font-weight: 700; color: var(--accent); line-height: 1; }
+    .ring small { font-size: 18px; color: var(--muted); }
+    .breakdown { flex: 1; min-width: 260px; }
+    .row { display: flex; justify-content: space-between; font-size: 14px; }
+    .bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 4px 0 10px; }
+    .bar i { display: block; height: 100%; background: var(--accent); }
+    .lang { display: flex; height: 14px; border-radius: 7px; overflow: hidden; margin: 6px 0 10px; background: var(--line); }
+    .lang i { display: block; height: 100%; }
+    .legend { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 14px; }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 500; }
+    ul.tips { list-style: none; padding: 0; margin: 0; }
+    ul.tips li { padding: 10px 12px; border-left: 3px solid var(--line); background: var(--bg); border-radius: 6px; margin: 8px 0; font-size: 14px; }
+    ul.tips li.high { border-color: var(--bad); }
+    ul.tips li.med { border-color: var(--warn); }
+    ul.tips li.low { border-color: var(--good); }
+    .muted { color: var(--muted); font-size: 14px; }
+    a { color: var(--accent); }
+    .hidden { display: none !important; }
+    .share { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+    .share img { border-radius: 8px; max-width: 100%; }
+    pre.snippet { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px; overflow-x: auto; font-size: 13px; margin: 0; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 680px) { .two { grid-template-columns: 1fr; } }
+    .winner { color: var(--good); font-weight: 600; }
+    ol.board { padding-left: 22px; margin: 0; font-size: 14px; }
+    ol.board li { margin: 8px 0; display: flex; gap: 10px; align-items: center; }
+    ol.board img { width: 24px; height: 24px; border-radius: 50%; }
+    .spark { width: 100%; height: 60px; }
+    .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GitHub Profile Ranker</h1>
+    <p class="sub">Score any public GitHub profile, see how it compares, and get concrete ways to improve.</p>
+    <form id="search" autocomplete="off">
+      <input id="username" placeholder="GitHub username, e.g. torvalds" aria-label="GitHub username" required>
+      <button id="go" type="submit">Analyze</button>
+    </form>
+    <div id="status" class="status" role="status"></div>
+  </header>
+
+  <main>
+    <section id="result" class="hidden">
+      <div class="card">
+        <div class="profile">
+          <img id="avatar" class="avatar" alt="">
+          <div>
+            <h2 id="name" style="margin:0"></h2>
+            <div class="muted"><a id="login" target="_blank" rel="noopener"></a> · <span id="meta"></span></div>
+            <div class="muted" id="bio"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Developer Score</h2>
+        <div class="score">
+          <div class="ring"><span id="total"></span><small>/100</small></div>
+          <div class="breakdown" id="breakdown"></div>
+        </div>
+        <p class="muted" id="rank" style="margin-top:14px"></p>
+        <div class="share">
+          <img id="card" alt="Shareable score card" width="600" height="320">
+        </div>
+        <div style="margin-top:12px">
+          <div class="muted" style="margin-bottom:6px">Embed this badge in a README:</div>
+          <pre class="snippet" id="badgeSnippet"></pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Why this score?</h2>
+        <p class="muted" style="margin-top:0">Each category's inputs and the points it adds to the total.</p>
+        <table>
+          <thead><tr><th>Category</th><th>Score</th><th>Points</th><th>What we measured</th></tr></thead>
+          <tbody id="explain"></tbody>
+        </table>
+        <ul class="tips" id="explainTips"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Overview</h2>
+        <div class="grid" id="stats"></div>
+      </div>
+
+      <div class="card">
+        <h2>Score history</h2>
+        <div id="history" class="muted">Each fresh analysis adds a point.</div>
+      </div>
+
+      <div class="card">
+        <h2>Languages (by repo size)</h2>
+        <div class="lang" id="langBar"></div>
+        <div class="legend" id="langLegend"></div>
+      </div>
+
+      <div class="card">
+        <h2>Top repositories</h2>
+        <table>
+          <thead><tr><th>Repo</th><th>Language</th><th>Stars</th><th>Forks</th></tr></thead>
+          <tbody id="repos"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>AI summary</h2>
+        <div id="aiBox" class="muted"></div>
+        <button id="aiBtn" class="ghost hidden" type="button" style="margin-top:10px">Generate summary</button>
+      </div>
+
+      <div class="card">
+        <h2>Suggestions</h2>
+        <ul class="tips" id="tips"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Compare two profiles</h2>
+      <form id="compareForm" autocomplete="off" style="margin-top:0">
+        <input id="compareA" placeholder="First username" aria-label="First username" required>
+        <input id="compareB" placeholder="Second username" aria-label="Second username" required>
+        <button type="submit" class="ghost">Compare</button>
+      </form>
+      <div id="compareResult" class="hidden"></div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <h2 style="margin:0">Leaderboard</h2>
+        <button id="clearBoardBtn" class="ghost" type="button" style="font-size:13px;padding:6px 12px">Clear Leaderboard</button>
+      </div>
+      <div class="toolbar">
+        <label class="muted" for="langFilter">Language</label>
+        <select id="langFilter">
+          <option value="">All languages</option>
+          <option>TypeScript</option><option>JavaScript</option><option>Python</option>
+          <option>Go</option><option>Rust</option><option>Java</option><option>C++</option>
+          <option>C#</option><option>Ruby</option><option>PHP</option><option>Swift</option>
+          <option>Kotlin</option><option>Shell</option>
+        </select>
+        <span class="muted" id="boardMeta"></span>
+      </div>
+      <ol class="board" id="board"><li class="muted">Loading...</li></ol>
+    </section>
+  </main>
+
+<script src="app.js"></script>
+</body>
+</html>

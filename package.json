@@ -1,0 +1,18 @@
+{
+  "name": "github-ranker",
+  "version": "1.0.0",
+  "description": "GitHub profile analysis, scoring, ranking, and suggestions",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "express-rate-limit": "^7.5.1"
+  }
+}

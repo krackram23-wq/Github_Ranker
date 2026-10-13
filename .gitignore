@@ -1,0 +1,15 @@
+node_modules/
+data/
+*.db
+*.db-*
+
+# Environment variables & secrets
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+!.env.example
+
+# Logs
+*.log
