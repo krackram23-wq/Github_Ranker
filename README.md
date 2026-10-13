@@ -1,6 +1,7 @@
 # GitHub Profile Ranker
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://github-ranker-five.vercel.app)
+[![CI](https://github.com/krackram23-wq/Github_Ranker/actions/workflows/test.yml/badge.svg)](https://github.com/krackram23-wq/Github_Ranker/actions/workflows/test.yml)
 [![Developer Score Badge](assets/badge.svg)](https://github-ranker-five.vercel.app)
 
 Score any public GitHub profile, see how it compares to others, and get concrete suggestions to improve.
@@ -27,7 +28,12 @@ Score any public GitHub profile, see how it compares to others, and get concrete
 - **Compare** two profiles side by side
 - **Score history** chart for each profile
 - **Shareable card & README badge**: dynamic SVG output ready to embed in any markdown file
+- **Social sharing**: share your score on X (Twitter) and LinkedIn with one click
+- **PNG card download**: export your score card as a high-res PNG image
+- **Profile README Generator**: auto-generate a GitHub profile README section with your score, stats, and top repos
+- **Copy badge markdown**: one-click copy of the badge embed code
 - **SQLite caching**: repeat lookups don't burn GitHub API quota
+- **CI/CD**: GitHub Actions runs tests on every push and PR
 
 ---
 
