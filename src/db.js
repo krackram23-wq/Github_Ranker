@@ -11,9 +11,29 @@ const { DatabaseSync } = require('node:sqlite'); // built into Node 22.13+, no n
  *  - history:      score snapshots over time, for growth charts
  */
 function createStore(file = ':memory:') {
-  if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });
-  const db = new DatabaseSync(file);
-  if (file !== ':memory:') db.exec('PRAGMA journal_mode = WAL;');
+  if (file !== ':memory:') {
+    try {
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+    } catch (err) {
+      if (err.code === 'EROFS') {
+        file = path.join(require('node:os').tmpdir(), 'ranker.db');
+      } else {
+        throw err;
+      }
+    }
+  }
+  let db;
+  try {
+    db = new DatabaseSync(file);
+    if (file !== ':memory:') db.exec('PRAGMA journal_mode = WAL;');
+  } catch (err) {
+    if (err.code === 'EROFS' || (err.message && err.message.includes('readonly'))) {
+      file = path.join(require('node:os').tmpdir(), 'ranker.db');
+      db = new DatabaseSync(file);
+    } else {
+      throw err;
+    }
+  }
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS github_cache (

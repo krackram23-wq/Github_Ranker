@@ -208,9 +208,9 @@ function createApp({
   return app;
 }
 
-if (require.main === module) {
-  const port = Number(process.env.PORT) || 3000;
-  const dbPath = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'ranker.db');
+function createDefaultApp() {
+  const os = require('node:os');
+  const dbPath = process.env.DB_PATH || (process.env.VERCEL ? path.join(os.tmpdir(), 'ranker.db') : path.join(__dirname, '..', 'data', 'ranker.db'));
   const store = createStore(dbPath);
   const github = createGitHubClient({ token: process.env.GITHUB_TOKEN || null });
   const cacheTtlMs = (Number(process.env.CACHE_TTL_HOURS) || 6) * HOUR;
@@ -218,12 +218,25 @@ if (require.main === module) {
   const aiConfig = loadAiConfig();
   const summarizer = aiConfig ? createSummarizer(aiConfig) : null;
 
-  createApp({ store, github, cacheTtlMs, summarizer }).listen(port, () => {
+  return createApp({ store, github, cacheTtlMs, summarizer, publicDir: path.join(__dirname, '..', 'public') });
+}
+
+let defaultApp = null;
+function getApp(req, res) {
+  if (!defaultApp) defaultApp = createDefaultApp();
+  return defaultApp(req, res);
+}
+
+getApp.createApp = createApp;
+getApp.HttpError = HttpError;
+getApp.validLogin = validLogin;
+
+if (require.main === module) {
+  const port = Number(process.env.PORT) || 3000;
+  const app = createDefaultApp();
+  app.listen(port, () => {
     console.log(`GitHub Ranker running at http://localhost:${port}`);
-    console.log(`Database: ${dbPath}`);
-    console.log(process.env.GITHUB_TOKEN ? 'Using GITHUB_TOKEN.' : 'No GITHUB_TOKEN set (60 GitHub requests/hour).');
-    console.log(summarizer ? `AI summaries: ${summarizer.provider} (${summarizer.model})` : 'AI summaries: off (no AI key set).');
   });
 }
 
-module.exports = { createApp, HttpError, validLogin };
+module.exports = getApp;
