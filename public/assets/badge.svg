@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="20" role="img" aria-label="dev score: 92/100">
+  <rect width="78" height="20" fill="#555" rx="3"/>
+  <rect x="78" width="66" height="20" fill="#3fb950" rx="3"/>
+  <g fill="#fff" font-family="Verdana,DejaVu Sans,sans-serif" font-size="11" text-anchor="middle">
+    <text x="39" y="14">dev score</text>
+    <text x="111" y="14">92/100</text>
+  </g>
+</svg>

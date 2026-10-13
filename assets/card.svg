@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="320" viewBox="0 0 600 320" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <rect width="600" height="320" rx="14" fill="#0d1117" stroke="#30363d"/>
+  <text x="40" y="60" fill="#e6edf3" font-size="24" font-weight="700">Linus Torvalds</text>
+  <text x="40" y="84" fill="#8b949e" font-size="14">@torvalds · C</text>
+  <text x="40" y="112" fill="#8b949e" font-size="13">Creator of Linux and Git</text>
+  <text x="440" y="70" fill="#58a6ff" font-size="56" font-weight="700" text-anchor="middle">92</text>
+  <text x="440" y="92" fill="#8b949e" font-size="14" text-anchor="middle">Developer Score /100</text>
+  
+  <text x="40" y="180" fill="#8b949e" font-size="13">Activity</text>
+  <rect x="200" y="170" width="300" height="10" rx="5" fill="#30363d"/>
+  <rect x="200" y="170" width="270" height="10" rx="5" fill="#3fb950"/>
+  <text x="515" y="180" fill="#e6edf3" font-size="13">90</text>
+  <text x="40" y="206" fill="#8b949e" font-size="13">Impact</text>
+  <rect x="200" y="196" width="300" height="10" rx="5" fill="#30363d"/>
+  <rect x="200" y="196" width="300" height="10" rx="5" fill="#3fb950"/>
+  <text x="515" y="206" fill="#e6edf3" font-size="13">100</text>
+  <text x="40" y="232" fill="#8b949e" font-size="13">Repo quality</text>
+  <rect x="200" y="222" width="300" height="10" rx="5" fill="#30363d"/>
+  <rect x="200" y="222" width="255" height="10" rx="5" fill="#3fb950"/>
+  <text x="515" y="232" fill="#e6edf3" font-size="13">85</text>
+  <text x="40" y="258" fill="#8b949e" font-size="13">Community</text>
+  <rect x="200" y="248" width="300" height="10" rx="5" fill="#30363d"/>
+  <rect x="200" y="248" width="300" height="10" rx="5" fill="#3fb950"/>
+  <text x="515" y="258" fill="#e6edf3" font-size="13">100</text>
+  <text x="40" y="284" fill="#8b949e" font-size="13">Consistency</text>
+  <rect x="200" y="274" width="300" height="10" rx="5" fill="#30363d"/>
+  <rect x="200" y="274" width="282" height="10" rx="5" fill="#3fb950"/>
+  <text x="515" y="284" fill="#e6edf3" font-size="13">94</text>
+  <text x="40" y="302" fill="#8b949e" font-size="12">200000 followers · 150000 stars · 10 repos</text>
+</svg>

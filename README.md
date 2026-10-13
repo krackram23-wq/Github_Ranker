@@ -1,23 +1,53 @@
 # GitHub Profile Ranker
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://github-ranker-five.vercel.app)
+[![Developer Score Badge](assets/badge.svg)](https://github-ranker-five.vercel.app)
 
 Score any public GitHub profile, see how it compares to others, and get concrete suggestions to improve.
 
 🔗 **Live Website**: [https://github-ranker-five.vercel.app](https://github-ranker-five.vercel.app)
+
+---
+
+## 📸 Preview
+
+![GitHub Profile Ranker Dashboard](assets/preview.jpg)
+
+---
 
 ## Features
 
 - **Developer Score** (0-100) from five weighted categories, with a visible breakdown
 - **Overview stats**: followers, repos, stars, forks, recent activity, account age
 - **Language mix** weighted by repo size, and top repositories
+- **AI Profile Review**: plain-language review and actionable 30-day improvements powered by LLMs
 - **Suggestions**: rule-based tips for bios, descriptions, topics, licenses, stale repos, and more
 - **Percentile rank** against every profile analyzed on your server
-- **Leaderboard** with a language filter
+- **Leaderboard** with language filtering and instant reset/clear option
 - **Compare** two profiles side by side
 - **Score history** chart for each profile
-- **Shareable card** (SVG) and **README badge** (SVG + Markdown snippet)
-- SQLite caching, so repeat lookups don't use GitHub quota
+- **Shareable card & README badge**: dynamic SVG output ready to embed in any markdown file
+- **SQLite caching**: repeat lookups don't burn GitHub API quota
+
+---
+
+## 🏷️ Embeddable Cards & Badges
+
+You can embed your dynamic ranker card and score badge directly in your GitHub profile or project README.
+
+### Shareable Score Card
+![Shareable Score Card](assets/card.svg)
+
+```markdown
+[![GitHub Ranker Card](https://github-ranker-five.vercel.app/api/card/your-username.svg)](https://github-ranker-five.vercel.app/?u=your-username)
+```
+
+### README Badge
+![README Badge](assets/badge.svg)
+
+```markdown
+[![GitHub Ranker score](https://github-ranker-five.vercel.app/api/badge/your-username.svg)](https://github-ranker-five.vercel.app/?u=your-username)
+```
 
 ## Project layout
 
